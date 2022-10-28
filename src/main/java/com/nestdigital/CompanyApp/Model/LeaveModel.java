@@ -23,6 +23,7 @@ public class LeaveModel {
         private String appdate;
         private String type;
 
+private int status;
 
     public int getId() {
         return id;
@@ -80,10 +81,18 @@ public class LeaveModel {
         this.type = type;
     }
 
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     public LeaveModel() {
     }
 
-    public LeaveModel(int id, int empid, String date, String reason, String duration, String appdate, String type) {
+    public LeaveModel(int id, int empid, String date, String reason, String duration, String appdate, String type, int status) {
         this.id = id;
         this.empid = empid;
         this.date = date;
@@ -91,6 +100,7 @@ public class LeaveModel {
         this.duration = duration;
         this.appdate = appdate;
         this.type = type;
+        this.status = status;
     }
 }
 

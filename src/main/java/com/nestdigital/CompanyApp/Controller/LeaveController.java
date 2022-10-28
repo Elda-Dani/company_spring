@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -20,17 +21,20 @@ public class LeaveController {
     private LeaveDao dao;
 
 
-    @CrossOrigin(origins = "*")
-    @PostMapping(path = "addleave",consumes = "application/json",produces = "application/json")
-    public String addleave(@RequestBody LeaveModel leave){
-        DateTimeFormatter dt=DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
-        LocalDateTime now=LocalDateTime.now();
-        String currentdate=String.valueOf(dt.format(now));
-        leave.setAppdate(currentdate);
-        System.out.println(leave.toString());
+
+
+    @CrossOrigin("*")
+    @PostMapping("/addLeave")
+    public String addLeave(@RequestBody LeaveModel leave){
+        DateTimeFormatter date = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss");
+        LocalDateTime now = LocalDateTime.now();
+        leave.setAppdate((String.valueOf(date.format(now))));
+        leave.setStatus(0);
         dao.save(leave);
         return "{status:'success'}";
     }
+
+
 
     @CrossOrigin(origins = "*")
     @PostMapping(path = "/leaveappli", consumes = "application/json", produces = "application/json")
@@ -40,9 +44,18 @@ public class LeaveController {
 
 
     @CrossOrigin(origins = "*")
-    @GetMapping(path = "/viewleaves")
+    @GetMapping(path = "/viewallleaves")
     public List<Map<String,String>> viewleaves(){
         return (List<Map<String,String>>) dao.Leave();
+    }
+
+
+    @Transactional
+    @CrossOrigin("*")
+    @PostMapping("/leaveStatus")
+    public String changeLeaveStatus(@RequestBody LeaveModel leave){
+        dao.changeStatusOfLeave(leave.getId(), leave.getStatus());
+        return "{status:'success'}'";
     }
 
 

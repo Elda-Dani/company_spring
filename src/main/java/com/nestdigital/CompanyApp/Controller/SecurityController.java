@@ -8,6 +8,7 @@ import com.nestdigital.CompanyApp.Model.SecurityModel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
@@ -45,8 +46,27 @@ public class SecurityController {
         return (List<SecurityModel>) dao.logg(login.getUsername(),login.getPassword());
     }
 
+    @CrossOrigin(origins = "*")
+    @PostMapping(path = "/searchmodel",consumes = "application/json",produces = "application/json")
+    public List<SecurityModel> searchmodel(@RequestBody SecurityModel sec){
+        return (List<SecurityModel>) dao.searchsecurity(sec.getName());
+    }
 
+    @CrossOrigin(origins = "*")
+    @Transactional
+    @PostMapping(path = "/deletesecurity",consumes = "application/json",produces = "application/json")
+    public String deletesecurity(@RequestBody SecurityModel sec)
+    {
+        dao.deleteById(sec.getId());
+        return "{status:'success'}";
+    }
 
-
+    @Transactional
+    @CrossOrigin(origins = "*")
+    @PostMapping(path = "/editsecurity",consumes = "application/json",produces = "application/json")
+    public String editsecurity(@RequestBody SecurityModel sec){
+        dao.editsec(sec.getName(),sec.getSecuritycode(),sec.getDoj(),sec.getUsername(),sec.getPassword(),sec.getId());
+        return "{status='success'}";
+    }
 
 }
