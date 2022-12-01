@@ -50,4 +50,11 @@ public class LogController {
     }
 
 
+    @CrossOrigin(origins = "*")
+    @GetMapping("/viewCheckIn")
+    public List<LogModel> viewCheckIn(){
+        return (List<LogModel>) dao.viewCheckIn();
+    }
+
+
 }

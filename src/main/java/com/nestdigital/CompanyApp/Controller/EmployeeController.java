@@ -36,6 +36,7 @@ public class EmployeeController {
         return (List<EmployeeModel>) dao.findAll();
     }
 
+
     @CrossOrigin(origins = "*")
     @PostMapping(path = "/searchemployee",consumes = "application/json",produces = "application/json")
     public List<EmployeeModel> searchEmployee(@RequestBody EmployeeModel emp){
